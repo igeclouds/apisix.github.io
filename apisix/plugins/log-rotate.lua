@@ -33,6 +33,7 @@ local os_remove = os.remove
 local os_rename = os.rename
 local str_sub = string.sub
 local str_format = string.format
+local str_byte = string.byte
 local ngx_sleep = require("apisix.core.utils").sleep
 local string_rfind = require("pl.stringx").rfind
 local local_conf
@@ -48,6 +49,7 @@ local default_logs
 local enable_compression = false
 local DEFAULT_ACCESS_LOG_FILENAME = "access.log"
 local DEFAULT_ERROR_LOG_FILENAME = "error.log"
+local SLASH_BYTE = str_byte("/")
 
 local schema = {
     type = "object",
@@ -88,9 +90,8 @@ local function get_log_path_info(file_type)
     local prefix = ngx.config.prefix()
 
     if conf_path then
-        local root = str_sub(conf_path, 1, 1)
         -- relative path
-        if root ~= "/" then
+        if str_byte(conf_path) ~= SLASH_BYTE then
             conf_path = prefix .. conf_path
         end
         local n = string_rfind(conf_path, "/")
@@ -113,14 +114,14 @@ end
 local function scan_log_folder(log_file_name)
     local t = {}
 
-    local log_dir, _ = get_log_path_info(log_file_name)
+    local log_dir, log_name = get_log_path_info(log_file_name)
 
-    local compression_log_type = log_file_name .. COMPRESSION_FILE_SUFFIX
+    local compression_log_type = log_name .. COMPRESSION_FILE_SUFFIX
     for file in lfs.dir(log_dir) do
         local n = string_rfind(file, "__")
         if n ~= nil then
             local log_type = file:sub(n + 2)
-            if log_type == log_file_name or log_type == compression_log_type then
+            if log_type == log_name or log_type == compression_log_type then
                 core.table.insert(t, file)
             end
         end

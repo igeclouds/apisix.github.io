@@ -239,7 +239,7 @@ Trailer: grpc-message
 上传 proto 文件：
 
 ```shell
-curl http://127.0.0.1:9080/apisix/admin/proto/1 \
+curl http://127.0.0.1:9080/apisix/admin/protos/1 \
 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
 {
     "content" : "syntax = \"proto3\";
@@ -309,7 +309,7 @@ Server: APISIX web server
 注意返回体中还存在未解码的字段，如果需要解码该字段，需要在上传的 proto 文件中加上该字段对应的 `message type`。
 
 ```shell
-curl http://127.0.0.1:9080/apisix/admin/proto/1 \
+curl http://127.0.0.1:9080/apisix/admin/protos/1 \
 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
 {
     "content" : "syntax = \"proto3\";
@@ -376,7 +376,7 @@ Server: APISIX web server
 {"error":{"details":[{"type":"service","message":"The server is out of service","code":1}],"message":"Out of service","code":14}}
 ```
 
-## 禁用插件
+## 删除插件
 
 当你需要禁用 `grpc-transcode` 插件时，可以通过以下命令删除相应的 JSON 配置，APISIX 将会自动重新加载相关配置，无需重启服务：
 
