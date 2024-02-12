@@ -47,7 +47,7 @@ jobs:
           submodules: recursive
 
       - name: Cache deps
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-deps
         with:
@@ -56,7 +56,7 @@ jobs:
 
       - name: Cache openssl-3.0 compilation
         id: cache-openssl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-openssl
         with:
@@ -105,7 +105,7 @@ jobs:
 
       - name: Cache images
         id: cache-images
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-apisix-docker-images
         with:
